@@ -1,0 +1,23 @@
+{
+  "name": "sit725-2024-prac4",
+  "version": "1.0.0",
+  "description": "prac 4",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wendyeldah/SIT725-2024-PRAC4.git"
+  },
+  "author": "wendy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wendyeldah/SIT725-2024-PRAC4/issues"
+  },
+  "homepage": "https://github.com/wendyeldah/SIT725-2024-PRAC4#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
+  }
+}
