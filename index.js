@@ -1,7 +1,7 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient } = require('mongodb');
 
-const uri = "mongodb+srv://wendyapiyo:n$U^CQedA6Qz^GU@cluster0.ihwxmvk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://wendyapiyo:P8OH3e5N1SMX0RDk@cluster1.ficbrco.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1";
 const port = process.env.PORT || 3000;
 const app = express();
 
@@ -9,48 +9,60 @@ app.use(express.static(__dirname + '/public_html'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true
-  }
-});
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+let collection; // Declare collection globally
 
 async function runDBConnection() {
   try {
-    // Connect the client to the server (optional starting in v4.7)
     await client.connect();
-    collection = client.db().collection('Cat');
-    console.log(collection);
+    collection = client.db().collection('FormData'); // Change collection name if needed
+    console.log("Connected to MongoDB");
   } catch (ex) {
-    console.error(ex);
+    console.error("Error connecting to MongoDB:", ex);
   }
 }
-
-app.get('/', (req, res) => {
-  res.render('index.html');
-});
-
-app.get('/api/cards', async (req, res) => {
+// Handle GET request to /api/formdata
+app.get('/api/cats', async (req, res) => {
   try {
-    const result = await getAllCats();
-    res.json({ statusCode: 200, data: result, message: 'get all cards success' });
+    const formData = await getFormData();
+    res.status(200).json({ data: formData });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ statusCode: 500, message: 'Internal server error' });
+    console.error("Error fetching form data:", err);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-async function getAllCats() {
-  // Assuming you have a function to retrieve all cats from the database
-  const result = await collection.find({}).toArray();
-  return result;
+async function getFormData() {
+  const formData = await collection.find({}).toArray();
+  return formData;
 }
 
-runDBConnection().catch(console.error);
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+// Handle POST request to /api/formdata
+app.post('/api/cats', async (req, res) => {
+  try {
+    const formData = req.body;
+    await insertData(formData);
+    res.status(200).json({ message: 'Form data saved successfully' });
+  } catch (err) {
+    console.error("Error saving form data:", err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
+
+async function insertData(formData) {
+  await collection.insertOne(formData);
+}
+
+// Start server and connect to MongoDB
+async function startServer() {
+  try {
+    await runDBConnection();
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
+    });
+  } catch (ex) {
+    console.error("Error starting server:", ex);
+  }
+}
+
+startServer();
