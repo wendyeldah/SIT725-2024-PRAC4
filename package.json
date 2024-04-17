@@ -18,6 +18,7 @@
   "homepage": "https://github.com/wendyeldah/SIT725-2024-PRAC4#readme",
   "dependencies": {
     "express": "^4.19.2",
+    "mongodb": "^6.5.0",
     "sqlite3": "^5.1.7"
   }
 }
