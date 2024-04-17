@@ -10,12 +10,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-let collection; // Declare collection globally
+let collection;
 
 async function runDBConnection() {
   try {
     await client.connect();
-    collection = client.db().collection('FormData'); // Change collection name if needed
+    collection = client.db().collection('FormData'); 
     console.log("Connected to MongoDB");
   } catch (ex) {
     console.error("Error connecting to MongoDB:", ex);

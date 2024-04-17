@@ -9,7 +9,7 @@ const submitForm = () => {
     description: $("#description").val()
   };
 
-  console.log("Form Data Submitted: ", formData); // Log form data
+  console.log("Form Data Submitted: ", formData); 
 
   // Send form data to the server
   $.ajax({
@@ -18,17 +18,17 @@ const submitForm = () => {
     contentType: 'application/json',
     data: JSON.stringify(formData),
     success: function(response) {
-      console.log(response.message); // Log success message from server
+      console.log(response.message); 
       alert("Cat saved successfully!");
     },
     error: function(xhr, status, error) {
-      console.error("Error sending form data:", error); // Log error
+      console.error("Error sending form data:", error);
       alert("Error saving cat!");
     }
   });
 };
 const addCards = (items) => {
-  console.log("Items received:", items); // Log the items received
+  console.log("Items received:", items); 
   items.forEach((item) => {
     let itemToAppend =
       '<div class="col s4 center-align">' +
